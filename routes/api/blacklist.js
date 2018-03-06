@@ -52,5 +52,19 @@ router.post('/check', authCheck,(req,res,next) => {
   });
 })
 
+router.get('/mylog',authCheck,(req,res,next) => {
+  const auth = req.get("authorization");
+  const credentials = new Buffer(auth.split(" ").pop(), "base64").toString("ascii").split(":");
+  const apiKey = credentials[0];
+  BlacklistEntry.find({"application":apiKey})
+   .then(list => {
+    let reqArray = list.map(dataset => dataset.toObject());
+     return res.status(200).json({'blacklist':reqArray});
+   })
+   .catch( err =>{
+     return res.status(200).json({'blacklist':[]});
+   })
+})
+
 
 module.exports = router;

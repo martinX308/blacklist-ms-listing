@@ -15,6 +15,6 @@ const applicationSchema = new Schema({
   }
 });
 
-const BlackistEntry = mongoose.model("BlackistEntry", applicationSchema);
+const BlacklistEntry = mongoose.model("BlacklistEntry", applicationSchema);
 
-module.exports = BlackistEntry;
+module.exports = BlacklistEntry;

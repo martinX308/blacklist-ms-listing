@@ -35,19 +35,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 //app.use(cookieParser());
 
-// -- Session
-// app.use(session({
-//   store: new MongoStore({
-//     mongooseConnection: mongoose.connection,
-//     ttl: 24 * 60 * 60 // 1 day
-//   }),
-//   secret: 'some-string',
-//   resave: true,
-//   saveUninitialized: true,
-//   cookie: {
-//     maxAge: 24 * 60 * 60 * 1000
-//   }
-// }));
+
 
 // routes
 app.use('/', index);
