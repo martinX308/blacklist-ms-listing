@@ -52,11 +52,9 @@ router.post('/check', authCheck,(req,res,next) => {
   });
 })
 
-router.get('/mylog',authCheck,(req,res,next) => {
-  const auth = req.get("authorization");
-  const credentials = new Buffer(auth.split(" ").pop(), "base64").toString("ascii").split(":");
-  const apiKey = credentials[0];
-  BlacklistEntry.find({"application":apiKey})
+router.get('/mylog/:appId',authCheck,(req,res,next) => {
+  const applicationId = req.params.appId;
+  BlacklistEntry.find({"application": applicationId})
    .then(list => {
     let reqArray = list.map(dataset => dataset.toObject());
      return res.status(200).json({'blacklist':reqArray});
@@ -66,5 +64,29 @@ router.get('/mylog',authCheck,(req,res,next) => {
    })
 })
 
+router.put('/mylog/:appId/edit',authCheck,(req,res,next) => {
+  const applicationId = req.params.appId;
+  const entryId = req.body.id;
+  const ddNum = req.body.ddNum;
+
+  BlacklistEntry.findById(entryId)
+   .then(result => {
+      if (result.toObject().application == applicationId) {
+
+        result.ddNumber=ddNum;
+        
+        result.save()
+          .then (()=> {
+            return res.status(200).json({'newEntry':result.toObject()});
+          });
+
+      } else {
+        return res.status(401).json({'error':'You are not authorized to modify this dataset'});
+      }
+   })
+   .catch( err =>{
+     return res.status(404).json({'error':'dataset could not found/modified'});
+   })
+})
 
 module.exports = router;
