@@ -14,6 +14,8 @@ const MongoStore = require('connect-mongo')(session);
 const index = require('./routes/index');
 
 const app = express();
+let whitelist = [process.env.CLIENT_URL];
+
 
 // -- mongoose configuration
 
@@ -26,7 +28,14 @@ mongoose.connect(process.env.MONGODB_URI, {
 // -- middelwares
 app.use(cors({
   credentials: true,
-  origin: [process.env.CLIENT_URL]
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(null, true);
+     // callback(new Error('Not allowed by CORS'))
+    }
+  }
 }));
 
 

@@ -20,7 +20,7 @@ router.post('/add', authCheck,(req,res,next) => {
   newEntry.save()
   .then(() => {
     console.log(newEntry);
-    res.status(201).send("Dataset was processed successfully");
+    res.status(201).json({message:"Dataset was processed successfully"});
   });
 
 })
@@ -74,7 +74,7 @@ router.put('/mylog/:appId/edit',authCheck,(req,res,next) => {
       if (result.toObject().application == applicationId) {
 
         result.ddNumber=ddNum;
-        
+
         result.save()
           .then (()=> {
             return res.status(200).json({'newEntry':result.toObject()});

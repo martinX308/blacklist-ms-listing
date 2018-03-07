@@ -16,7 +16,7 @@ function authCheck (req, res, next) {
     withCredentials: true
   };
 
-  axios.post ('http://localhost:3000/api/customer-apps/verify',identifier,options) // cors
+  axios.post (process.env.BE_URL+'/api/customer-apps/verify',identifier,options) // cors
     .then(response => {
       console.log(response);
       return response.data; })
